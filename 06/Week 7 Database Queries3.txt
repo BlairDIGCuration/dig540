@@ -1,0 +1,172 @@
+Assignment:
+1 One simple SELECT statement
+A SELECT statement for each of the relationships between tables that demonstrates how they are linked by foreign keys
+Five SELECT statements that answer questions using the relationships between your tables
+
+
+1 simple SELECT statement:
+
+SELECT * FROM `language` ORDER BY `language_id` ASC
+"1","Ancient Egyptian Language","Northern Africa"
+"2","Hittite","Anatolia"
+"3","Ancient Greek","Greece/ Ancient Mediterranean"
+"4","Latin","Italy/ Mediterranean/ Europe/ Northern Africa/ Near East"
+"5","Akkadian","Near East"
+"6","Sumerian","Near East"
+"7","Sanskrit","Southeastern Asia"
+"8","Norse","Northern Europe/ Scandanavia/ Areas Settled by the Norse"
+"9","Hattic","Anatolia"
+"10","Luwian","Anatolia"
+
+
+Each relationship table:
+
+1. SELECT culture.name, language.name FROM culture, language WHERE culture_id = language_id
+"Ancient Egyptian","Ancient Egyptian Language"
+"Hittite","Hittite"
+"Ancient Greek","Ancient Greek"
+"Ancient Roman","Latin"
+"Akkadian","Akkadian"
+
+2. SELECT language.name, culture.name, language_culture.language_id FROM language, culture, language_culture WHERE culture.culture_id = language_culture.culture_id AND language.language_id = language_culture.language_id AND language.name = culture.name
+"Hittite","Hittite","2"
+"Ancient Greek","Ancient Greek","3"
+
+3. SELECT culture.location as `culture_location`, language_culture.language_id, language.region as `language_region` FROM culture, language_culture, language WHERE culture.culture_id = language_culture.culture_id AND language.language_id = language_culture.language_id AND language_culture.language_id = language.language_id
+"Ancient Egypt","1","Northern Africa"
+"Asia Minor/ Anatolia","2","Anatolia"
+"Asia Minor/ Anatolia","5","Near East"
+"Asia Minor/ Anatolia","9","Anatolia"
+"Asia Minor/ Anatolia","10","Anatolia"
+"Europe/ Mediterranean/ Italy/ Northern Africa/ Near East ","4","Italy/ Mediterranean/ Europe/ Northern Africa/ Near East"
+"Europe/ Mediterranean/Ancient Greece","3","Greece/ Ancient Mediterranean"
+
+4.SELECT dialect.name, language.name FROM dialect, language WHERE dialect.language_id = language.language_id
+"Archaic Egyptian","Ancient Egyptian Language"
+"Old Egyptian","Ancient Egyptian Language"
+"Middle Egyptian","Ancient Egyptian Language"
+"Late Egyptian","Ancient Egyptian Language"
+"Demotic Egyptian","Ancient Egyptian Language"
+"Coptic Egyptian","Ancient Egyptian Language"
+"Old Hittite","Hittite"
+"(Classical) Hittite","Hittite"
+"Middle Hittite","Hittite"
+"Neo-Hittite","Hittite"
+"Attic Greek","Ancient Greek"
+"Ionic Greek","Ancient Greek"
+"Aeolic Greek","Ancient Greek"
+"Arcadocypriot Greek","Ancient Greek"
+"Doric Greek","Ancient Greek"
+"Ancient Macedonian","Ancient Greek"
+"Kione Greek","Ancient Greek"
+"Old Latin","Latin"
+"Classical Latin","Latin"
+"Vulgar Latin","Latin"
+"Assyrian","Akkadian"
+"Babylonian","Akkadian"
+"Mariotic Akkadian","Akkadian"
+"Tell Beydar Akkadian","Akkadian"
+"Old Akkadian","Akkadian"
+"Old Babylonian ","Akkadian"
+"Old Assyrian","Akkadian"
+"Middle Babylonian","Akkadian"
+"Neo-Babylonian","Akkadian"
+"Neo-Assyrian","Akkadian"
+"Middle Assyrian","Akkadian"
+"Late Babylonian","Akkadian"
+"eme-g̃ir Sumerian","Sumerian"
+"eme-sal Sumerian","Sumerian"
+"eme-galam Sumerian","Sumerian"
+"eme-si-sa Sumerian","Sumerian"
+"eme-te-na Sumerian","Sumerian"
+
+5. SELECT dialect.name, audio_file FROM dialect, audio WHERE dialect_id = audio_id
+"Old Egyptian","demo_2"
+"Archaic Egyptian","demo_1"
+
+6. SELECT audio.audio_id, dialect.name FROM audio, dialect WHERE audio.audio_id = dialect.dialect_id
+"1","Archaic Egyptian"
+"2","Old Egyptian"
+
+7. SELECT audio.description as `description`, submitter.name as `submitter_name` FROM audio, submitter WHERE audio.submitter_id = submitter.submitter_id
+"This is my first time speaking a dialect of the Ancient Egyptian language, so I kept it simple. ","Blair Mueller"
+"My first attempt to speak classical Hittite. I tried to make a brief introduction. ","Blair Mueller"
+
+
+
+Questions: 
+1. What is the root language of the Babylonian dialect? 
+
+select dialect.name as `dialect_name`, language.name as `language_name` from language, dialect where dialect.name = "Babylonian" AND dialect.language_id = language.language_id
+"Babylonian","Akkadian"
+
+2. What is the history of the ancient cultures we are learning? 
+
+SELECT culture.history as `history`, culture.name as `culture_name`, language_culture.culture_id FROM culture, language_culture WHERE culture.culture_id = culture.culture_id AND culture.culture_id = language_culture.culture_id
+"Ancient Egypt was one of the most powerful civilizations of the ancient world. There were 190 Pharaohs who ruled Ancient Egypt. The most famous among them included: Ramesses II (1279–1213 BC ), Cleopatra VII (51-30 BC), and Tutankhamun (c.1334-1325 BC).","Ancient Egyptian","1"
+"The Kingdom of the Hittites began as an absolute monarchy during the Old Kingdom and turned into a constitutional monarchy during the Middle and New Kingdoms. The kings of the Hittites were usually renowned for their warrior prowess and one of the most famous to represent this theme was King Šuppiluliuma I (c. 1344–1322 BC).","Hittite","2"
+"The Kingdom of the Hittites began as an absolute monarchy during the Old Kingdom and turned into a constitutional monarchy during the Middle and New Kingdoms. The kings of the Hittites were usually renowned for their warrior prowess and one of the most famous to represent this theme was King Šuppiluliuma I (c. 1344–1322 BC).","Hittite","2"
+"The Kingdom of the Hittites began as an absolute monarchy during the Old Kingdom and turned into a constitutional monarchy during the Middle and New Kingdoms. The kings of the Hittites were usually renowned for their warrior prowess and one of the most famous to represent this theme was King Šuppiluliuma I (c. 1344–1322 BC).","Hittite","2"
+"The Kingdom of the Hittites began as an absolute monarchy during the Old Kingdom and turned into a constitutional monarchy during the Middle and New Kingdoms. The kings of the Hittites were usually renowned for their warrior prowess and one of the most famous to represent this theme was King Šuppiluliuma I (c. 1344–1322 BC).","Hittite","2"
+"Ancient Greece can be divided into two time periods: Archaic Greece and Classical Greece. City states like Athens and Sparta and their differing ways of life have been studied at length. Herodotus, Socrates, and Plato were famous philosophers from this culture. ","Ancient Greek","3"
+"Ancient Rome's beginning is remembered through the story of ""Romulus and Remus."" Throughout its existence, ancient Rome's government took several forms. First it was a Kingdom from 753–509 BC. Then, Rome became the Roman Republic from 509–27 BC. Next, it became the Roman Empire 27 BC – AD 395. Then, when the Roman Empire fell,  it was split into two sections. One was the Western Roman Empire that lasted from AD 395–476. The other was the Eastern Roman Empire which continued on significantly longer from  AD 395–1453. Many kings and emperors ruled the Ancient Roman civilization. Some more commonly known ones were: Gaius Julius Caesar, Augustus, Octavian, Commodus, Nero, and Caligula.","Ancient Roman","4"
+
+ 
+3. Who has submitted audio files so far? 
+
+select audio.submitter_id, submitter.name from audio, submitter where audio.submitter_id = submitter.submitter_id
+"1","Blair Mueller"
+"1","Blair Mueller"
+"2","Jane Doe"
+"3","John Doe"
+
+
+4. Which dialects came from which regions? 
+
+select dialect.name as `dialect_name`, language.region as `region` from language, dialect where dialect.language_id = language.language_id
+"Old Hittite","Anatolia"
+"(Classical) Hittite","Anatolia"
+"Middle Hittite","Anatolia"
+"Neo-Hittite","Anatolia"
+"Attic Greek","Greece/ Ancient Mediterranean"
+"Ionic Greek","Greece/ Ancient Mediterranean"
+"Aeolic Greek","Greece/ Ancient Mediterranean"
+"Arcadocypriot Greek","Greece/ Ancient Mediterranean"
+"Doric Greek","Greece/ Ancient Mediterranean"
+"Ancient Macedonian","Greece/ Ancient Mediterranean"
+"Kione Greek","Greece/ Ancient Mediterranean"
+"Old Latin","Italy/ Mediterranean/ Europe/ Northern Africa/ Near East"
+"Classical Latin","Italy/ Mediterranean/ Europe/ Northern Africa/ Near East"
+"Vulgar Latin","Italy/ Mediterranean/ Europe/ Northern Africa/ Near East"
+"Assyrian","Near East"
+"Babylonian","Near East"
+"Mariotic Akkadian","Near East"
+"Tell Beydar Akkadian","Near East"
+"Old Akkadian","Near East"
+"Old Babylonian ","Near East"
+"Old Assyrian","Near East"
+"Middle Babylonian","Near East"
+"Neo-Babylonian","Near East"
+"Neo-Assyrian","Near East"
+"Middle Assyrian","Near East"
+"Late Babylonian","Near East"
+"eme-g̃ir Sumerian","Near East"
+"eme-sal Sumerian","Near East"
+"eme-galam Sumerian","Near East"
+"eme-si-sa Sumerian","Near East"
+"eme-te-na Sumerian","Near East"
+"Archaic Egyptian","Northern Africa"
+"Old Egyptian","Northern Africa"
+"Middle Egyptian","Northern Africa"
+"Late Egyptian","Northern Africa"
+"Demotic Egyptian","Northern Africa"
+"Coptic Egyptian","Northern Africa"
+
+
+5. What are the academic backgrounds of the submitters? 
+
+select submitter.background, audio.audio_id from submitter,audio where submitter.submitter_id = audio.submitter_id
+"I have two Bachelor's Degrees in Anthropology and Asian Studies and two minor degrees in History and Mandarin. I am a at a Novice level with all of these ancient languages, but I am eager to learn. ","2"
+"I have two Bachelor's Degrees in Anthropology and Asian Studies and two minor degrees in History and Mandarin. I am a at a Novice level with all of these ancient languages, but I am eager to learn. ","1"
+"I am earning my Undergraduate degree in Archeology at the University of Northern Colorado. I look forward to studying the ancient Greek dialects to I can decipher primary resources for my research.","4"
+"I live in England and am earning my Master's degree at Cambridge. I am currently studying archeology and am required to become proficient at speaking at least 1 ancient language in order to graduate the program.","3"
