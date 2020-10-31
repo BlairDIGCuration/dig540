@@ -26,7 +26,7 @@ $first_line = fgetcsv($file_handle);
 for($i=0; $i<count($first_line); $i++){
     //We're now inside a loop. This loop will execute exactly as many times as there are items in the 
     //$first_line array and will keep track of interation we're on in the $i variable. Therefore, 
-    // no matter which iteration of the loop we're on, we can access the current item in the $first_line
+    //no matter which iteration of the loop we're on, we can access the current item in the $first_line
     //array by writing $first_line[$i]. For now, let's just print them out. 
     
     //printing, in this case, uses a function called 'print_r'. I'm going to give print_r a string of 
@@ -38,12 +38,12 @@ for($i=0; $i<count($first_line); $i++){
 }
 
 // While we could keep going and get every line of data individually, it's faster to get each line
-// in another loop. We'll use a different type of loop this titme: a while loop. 
+// in another loop. We'll use a different type of loop this time: a while loop. 
 while($data_row = fgetcsv($file_handle)){
     //This loop will execute as many times as there are rows in the csv file, beginning with the
     //second row (since we already read the first row earlier). It will store each row in the 
-    //$data_row variable, whihc is an array like $first_line was. Right now, let's just print
-    //out each for wiht a litle bit of formatting. 
+    //$data_row variable, which is an array like $first_line was. Right now, let's just print
+    //out each for with a litle bit of formatting. 
 
     //First, let's print out an introductory line for each album. By looking at the data file, 
     //we know that the first column is the number of the album. Let's use that here. I'll use another
@@ -61,7 +61,7 @@ while($data_row = fgetcsv($file_handle)){
         //Hey, this is a loop inside another loop! Yep, you can do that. 
 
         //Now, another thing we know about the data file is that it index 4 and 5 of each row
-        //are genre and subgenre. Those two fields are comma delimited lists that can contian
+        //are genre and subgenre. Those two fields are comma delimited lists that can contain
         //multiple items in one data slot. We'll treat those a bit diffferently than the columns. 
         //To do so, we need to add a conditional statement to the code-in this case, an if statement. 
         //We want one thing to happen when $i is 1,2, or 3, and something else to happen id $i is 
@@ -72,11 +72,12 @@ while($data_row = fgetcsv($file_handle)){
             print_r("$first_line[$i]: $data_row[$i]<br>");
         } else {
             // Since 1,2, and 3 are handled above and the loop ends after 5, only 4 and 5 can go here
-            // These are the genr and subgenre fields. Let's split them up based on commas.
+            // These are the genre and subgenre fields. Let's split them up based on commas.
             // The str_getcsv function is like the fgetcsv function, but instead of operating on a 
-            // file it splits up a stirng of text that's already in memory. We want ti to split up the string that's stored in the $sata_row[$i]. $genres will be an array again, but like the 
-            // result of fgetcsv was above. (note that the variable name$genres below will contain both
-            // genre and subgenre daya on different iterations of the look!)
+            // file it splits up a string of text that's already in memory. We want it to split up 
+            // the string that's stored in the $data_row[$i]. $genres will be an array again, just like the 
+            // result of fgetcsv was above. (note that the variable name $genres below will contain both
+            // genre and subgenre data on different iterations of the loop!)
             $genres = str_getcsv($data_row[$i]);
 
             //Now we need to do something with each genre. Let's print each one in it's own numbered
