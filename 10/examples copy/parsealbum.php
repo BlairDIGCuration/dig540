@@ -10,35 +10,27 @@
 
     $first_line = fgetcsv($file_handle);
 
-    //QUESTION!
     for($i=0; $i<count($first_line); $i++){
         print_r('Column header found: '.$first_line[$i].'<br>');
     }
 
-    $albums = array();
+    $texts = array();
     
     while($data_row = fgetcsv($file_handle)){
-        $album = new Album();
-        $album->setArtist($data_row[3]);
-        $album->setTitle($data_row[2]);
-        $album->setRank($data_row[0]);
-        $album->setYear($data_row[1]);
-        $album->setGenres($data_row[4]);
-        $album->setSubgenres($data_row[5]);
-        array_push($albums, $album);
+        $text = new Text();
+        $text->setLanguage($data_row[3]);
+        $text->setText_title($data_row[2]);
+        $text->setTranslation($data_row[0]);
+        $text->setText_cache($data_row[1]);
+        $text->setPerson_id($data_row[4]);
+        $text->setRole($data_row[5]);
+        $text->setPerson_name($data_row[6]);
+        array_push($texts, $text;
     }
-    //QUESTION!!!
-    for($i=count($albums)-1; $i>=0; $i--){
+    for($i=count($texts)-1; $i>=0; $i--){
         print_r("<p>This is the #$i Text:<br>");
 
-        $albums[$i]->getData();
-
-        // $albums[$i]->getTitle();
-        // $albums[$i]->getYear();
-        // $albums[$i]->getRank();
-        // $albums[$i]->getArtist();
-        // $albums[$i]->getGenres();
-        // $albums[$i]->getSubgenres();
+        $texts[$i]->getData();
         print_r('</p>');
     }
 

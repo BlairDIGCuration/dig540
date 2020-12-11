@@ -1,5 +1,5 @@
 <?php
-  class Text{
+ class Text{
     private $language;
     private $text_title;
     private $translation;
@@ -38,6 +38,7 @@
             $this->setText_cache($text_data[1]);
             $this->setPerson_id($text_data[4]);
             $this->setRole($text_data[5]);
+           // $this->setPerson_name($text_data[6]);
         }
         
 
@@ -49,6 +50,7 @@
         $this->getText_cache();
         $this->getPerson_id();
         $this->getRole();
+        //$this->getPerson_name();
     }
 
     public function save(){
@@ -57,12 +59,16 @@
         try{
             $text_insert = $pdo->prepare("INSERT INTO text(translation, text_cache, text_title, language)
                                         VALUES(?,?,?,?)");
+
             $text_insert = $pdo->prepare("INSERT INTO text(translation, text_cache, text_title, language)
                                         VALUES(?,?,?,?)");
             $db_text = $text_insert->execute([$this->translation, $this->text_cache, $this->text_title, $this->language]);
             $this->id = $pdo->lastInsertID();
             print_r("--Saved $this->translation to the database.--<br>\n");
 
+            //$person_insert = $pdo->prepare("INSERT INTO person (person_name) VALUES (?)");
+            //$db_person = $person_inertt->execute([$this->person_name]);
+            //$this->id = $pdo->lastInsertID();
             
 
             $select_person_text = $pdo->prepare("SELECT * FROM person_text WHERE role= ?");
@@ -94,4 +100,5 @@
     }
 
 }
+
 ?>

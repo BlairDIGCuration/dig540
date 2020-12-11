@@ -7,10 +7,10 @@
     private $person_id;
     private $role;
     private $id;
-    private $texts;
+    private $person;
 
-    public function setTexts($texts) { $this->texts = $texts; }
-    public function getTexts(){print_r( 'texts: '. $this->texts . '<br>'); }
+    public function setPerson_name($personName) { $this->person_name = $personName; }
+    public function getPerson_name(){ print_r ('person: '.$this->person_name . '<br>'); }
     public function setID($dbID){ $this->id = $dbID; }
     public function getID(){ print_r ( 'id: '. $this->id . '<br>'); }
     public function setLanguage($languageName){ $this->language = $languageName; }
@@ -38,6 +38,7 @@
             $this->setText_cache($text_data[1]);
             $this->setPerson_id($text_data[4]);
             $this->setRole($text_data[5]);
+            $this->setPerson_name($text_data[6]);
         }
         
 
@@ -49,38 +50,40 @@
         $this->getText_cache();
         $this->getPerson_id();
         $this->getRole();
+        $this->getPerson_name();
     }
 
     public function save(){
         global $pdo;
        
         try{
-            $text_insert = $pdo->prepare("INSERT INTO text(translation, text_cache, text_title, language)
-                                        VALUES(?,?,?,?)");
-            $text_insert = $pdo->prepare("INSERT INTO text(translation, text_cache, text_title, language)
+           $text_insert = $pdo->prepare("INSERT INTO text(translation, text_cache, text_title, language)
                                         VALUES(?,?,?,?)");
             $db_text = $text_insert->execute([$this->translation, $this->text_cache, $this->text_title, $this->language]);
             $this->id = $pdo->lastInsertID();
             print_r("--Saved $this->translation to the database.--<br>\n");
 
-            
+            $person_insert = $pdo->prepare("INSERT INTO person(person_name) VALUES (?)");
+            $db_person = $person_insert->execute([$this->person_name]);
+            $this->id = $pdo->lastInsertID();
+            print_r("--Saved $this->person_name to the database.--<br>\n");
 
             $select_person_text = $pdo->prepare("SELECT * FROM person_text WHERE role= ?");
             $person_text_insert = $pdo->prepare("INSERT INTO person_text (role) VALUES (?)");
             $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role, text_id) VALUES (?,?,?)");
     
-            for($i=0; $i<count($this->texts);$i++){
-                $select_person_text->execute([$this->texts[$i]]);
+            for($i=0; $i<count($this->person);$i++){
+                $select_person_text->execute([$this->id[$i]]);
                 $existing_person_text = $select_person_text->fetch();
                 //if result
                 if(!$existing_person_text){
                     //if no result
-                    $db_person_text = $person_text_insert->execute([$this->texts[$i]]);
-                    $texts = $pdo->lastInsertRole();
+                    $db_person_text = $person_text_insert->execute([$this->id[$i]]);
+                    $text = $pdo->lastInsertRole();
                 } else {
-                    $texts = $existing_id['id'];
+                    $text = $existing_id['id'];
                 }
-                $person_text_link->execute([$this->$texts]);
+                $person_text_link->execute([$this->id], $person_id);
                 print_r("Connected ".$this_text[$i]." to $this->person_text<br>\n");
             }           
             flush();
