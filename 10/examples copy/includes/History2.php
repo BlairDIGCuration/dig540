@@ -32,6 +32,8 @@
     
 
     public function setData($text_data){
+            $this->setTexts($text_data[7]);
+            $this->setID($text_data[6]);
             $this->setLanguage($text_data[3]);
             $this->setText_title($text_data[2]);
             $this->setTranslation($text_data[0]);
@@ -43,6 +45,8 @@
 
 
     public function getData(){
+        $this->getTexts();
+        $this->getID();
         $this->getLanguage();
         $this->getText_title();
         $this->getTranslation();
