@@ -7,10 +7,10 @@ class Text{
   private $person_id;
   private $role;
   private $id;
-  private $texts;
+  private $text;
 
-  public function setTexts($texts) { $this->texts = $texts; }
-  public function getTexts(){print_r( 'texts: '. $this->texts . '<br>'); }
+  public function setTexts($text) { $this->text = $text; }
+  public function getTexts(){print_r( 'texts: '. $this->text . '<br>'); }
   public function setID($dbID){ $this->id = $dbID; }
   public function getID(){ print_r ( 'id: '. $this->id . '<br>'); }
   public function setLanguage($languageName){ $this->language = $languageName; }
@@ -91,18 +91,18 @@ class Text{
           $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role) VALUES (?,?)");
   
           for($i=0; $i<count($this->person_id);$i++){
-              $select_person_text->execute([$this->person_id[$i]]);
+              $select_person_text->execute([$this->person_id[$i], $this->role[$i], $this->id]);
               $existing_person_text = $select_person_text->fetch();
               //if result
               if(!$existing_person_text){
                   //if no result
-                  $db_person_text = $person_text_insert->execute([$this->person_id[$i]]);
+                  $db_person_text = $person_text_insert->execute([$this->person_id[$i], $this->role[$i], $this->id]);
                   $person_id = $pdo->lastInsertid();
               } else {
                   $person_id = $existing_id['id'];
               }
-              $person_text_link->execute([$this->$person_id]);
-              print_r("Connected ".$this_text[$i]." to $this->person_text<br>\n");
+              $person_text_link->execute([$this->person_id[$i], $this->role[$i], $this->id]);
+              print_r("Connected ".$this->text[$i]." to $this->person_text<br>\n");
           }           
           flush();
           ob_flush();
@@ -116,4 +116,3 @@ class Text{
 
 }
 ?>
-
