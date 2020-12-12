@@ -23,7 +23,7 @@ class Text{
   public function getText_cache(){ print_r('Text_cache: '.$this->text_cache . '<br>'); }
 
   public function setPerson_id($person_id){ 
-      $this->person_id = str_getcsv($person_id); 
+      $this->person_id = str_getcsv(trim($person_id)); 
     }
   public function getPerson_id(){
     for($j=0; $j<count($this->person_id); $j++){
@@ -47,20 +47,18 @@ class Text{
          // else print_r("<span style='color:red'>Translation #".($j+1)." is ".$this->subgenres[$j]."</span><br>");
 //}
   
-
+    //use csv  numbers
+    //ONLY csv
   public function setData($text_data){
-         // $this->setTexts($text_data[7]);
-          //$this->setID($text_data[6]);
           $this->setLanguage($text_data[3]);
           $this->setText_title($text_data[2]);
-          $this->setTranslation($text_data[0]);
-          $this->setText_cache($text_data[1]);
-          $this->setPerson_id($text_data[4]);
-          $this->setRole($text_data[5]);
+          $this->setTranslation($text_data[5]);
+          $this->setText_cache($text_data[4]);
+          $this->setPerson_id($text_data[0]);
+          $this->setRole($text_data[1]);
       }
-      
 
-
+//taking avalible data and makes it avalible on webpage
   public function getData(){
       $this->getTexts();
       $this->getID();
@@ -87,22 +85,38 @@ class Text{
           
 
           $select_person_text = $pdo->prepare("SELECT * FROM person WHERE person_id= ?");
-          $person_text_insert = $pdo->prepare("INSERT INTO person (person_id) VALUES (?)");
-          $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role) VALUES (?,?)");
+          $person_insert = $pdo->prepare("INSERT INTO person (person_id) VALUES (?)");
+          $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role, text_id) VALUES (?,?,?)");
   
+        print_r($this->person_id);
+
           for($i=0; $i<count($this->person_id);$i++){
-              $select_person_text->execute([$this->person_id[$i], $this->role[$i], $this->id]);
+              if(empty($this->person_id[$i])){ continue; }
+
+//Order of operation:
+//- figure out if each person_id is already in the person table
+//- if that person doesn't exist, write a new person record
+//- get the person_id
+//- write into person_text a row connecting person_id, text_id, and role
+
+                $select_person_text->execute([$this->person_id[$i]]);
+              
               $existing_person_text = $select_person_text->fetch();
               //if result
               if(!$existing_person_text){
                   //if no result
-                  $db_person_text = $person_text_insert->execute([$this->person_id[$i], $this->role[$i], $this->id]);
+                  //THAT'S BAD
+                  $db_person_text = $person_insert->execute([$this->person_id[$i]]);
                   $person_id = $pdo->lastInsertid();
+                  print_r("Tried to add a person id, oops");
               } else {
-                  $person_id = $existing_id['id'];
+                  $person_id = $this->person_id[$i];
               }
+              print_r("person_id: ".$this->person_id[$i]."<br>");
+              print_r("text_id: ".$this->id."<br>");
+              print_r("role: ".$this->role[$i]."<br>");
               $person_text_link->execute([$this->person_id[$i], $this->role[$i], $this->id]);
-              print_r("Connected ".$this->text[$i]." to $this->person_text<br>\n");
+              print_r("Connected ".$this->id." to ".$this->person_id[$i]."<br>\n");
           }           
           flush();
           ob_flush();
