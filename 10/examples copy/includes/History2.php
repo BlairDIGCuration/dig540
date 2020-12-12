@@ -9,10 +9,7 @@
     private $id;
     private $texts;
 
-    public function setTexts($texts) { $this->texts = $texts; }
-    public function getTexts(){print_r( 'texts: '. $this->texts . '<br>'); }
-    public function setID($dbID){ $this->id = $dbID; }
-    public function getID(){ print_r ( 'id: '. $this->id . '<br>'); }
+    
     public function setLanguage($languageName){ $this->language = $languageName; }
     public function getLanguage(){ print_r( 'Language: '.$this->language . '<br>'); }
     public function setText_title($text_titleName){ $this->text_title = $text_titleName; }
@@ -21,10 +18,33 @@
     public function getTranslation(){ print_r('Translation: '.$this->translation . '<br>'); }
     public function setText_cache($text_cacheLocation){ $this->text_cache = $text_cacheLocation; }
     public function getText_cache(){ print_r('Text_cache: '.$this->text_cache . '<br>'); }
-    public function setPerson_id($person_id){ $this->person_id = $person_id; }
-    public function getPerson_id(){ print_r('Person_id: '.$this->person_id . '<br>'); }
-    public function setRole($roles){ $this->role = $roles; }
-    public function getRole(){ print_r('Role: '.$this->role.'<br>'); }
+    public function setTexts($texts) { $this->texts = $texts; }
+    public function getTexts(){ print_r( 'texts: '. $this->texts . '<br>'); }
+    public function setID($dbID){ $this->id = $dbID; }
+    public function getID(){ print_r ( 'id: '. $this->id . '<br>'); }
+
+    public function setPerson_id($person_id){ 
+        $this->person_id = str_getcsv($person_id); 
+    }
+    public function getPerson_id(){ 
+        for($j=0; $j<count($this->person_id); $j++){
+            if($j%2==0) print_r("<span style='color:blue'>Genre #".($j+1)." is ".$this->person_id[$j]."</span><br>");
+            else print_r("<span style='color:red'>Genre #".($j+1)." is ".$this->person_id[$j]."</span><br>");
+        }
+    }
+
+    public function setRole($roles){
+         $this->role = str_getcsv($roles);
+         }
+    public function getRole(){ 
+        for($j=0; $j<count($this->role); $j++){
+            if($j%2==0) print_r("<span style='color:blue'>Subgenre #".($j+1)." is ".$this->role[$j]."</span><br>");
+            else print_r("<span style='color:red'>Subgenre #".($j+1)." is ".$this->role[$j]."</span><br>");
+        }
+    }
+    
+
+    }
         //for($j=0; $j<count($this->subgenres); $j++){
             //if($j%2==0) print_r("<span style='color:blue'>Translation #".($j+1)." is ".$this->subgenres[$j]."</span><br>");
            // else print_r("<span style='color:red'>Translation #".($j+1)." is ".$this->subgenres[$j]."</span><br>");
@@ -32,27 +52,27 @@
     
 
     public function setData($text_data){
-            $this->setTexts($text_data[7]);
-            $this->setID($text_data[6]);
-            $this->setLanguage($text_data[3]);
-            $this->setText_title($text_data[2]);
-            $this->setTranslation($text_data[0]);
-            $this->setText_cache($text_data[1]);
-            $this->setPerson_id($text_data[4]);
-            $this->setRole($text_data[5]);
+        $this->setLanguage($text_data[3]);
+        $this->setText_title($text_data[2]);
+        $this->setTranslation($text_data[0]);
+        $this->setText_cache($text_data[1]);
+        $this->setPerson_id($text_data[4]);
+        $this->setRole($text_data[5]);
+        $this->setTexts($text_data[7]);
+        $this->setID($text_data[6]);
         }
         
 
 
     public function getData(){
-        $this->getTexts();
-        $this->getID();
         $this->getLanguage();
         $this->getText_title();
         $this->getTranslation();
         $this->getText_cache();
         $this->getPerson_id();
         $this->getRole();
+        $this->getTexts();
+        $this->getID();
     }
 
     public function save(){
@@ -69,13 +89,13 @@
 
             
 
-            $select_person_text = $pdo->prepare("SELECT * FROM person_text WHERE role= ?");
-            $person_text_insert = $pdo->prepare("INSERT INTO person_text (role) VALUES (?)");
-            $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role, text_id) VALUES (?,?,?)");
+            $select_person = $pdo->prepare("SELECT * FROM person WHERE person_id= ?");
+            $person_insert = $pdo->prepare("INSERT INTO person (person_id) VALUES (?)");
+            $person_link = $pdo->prepare("INSERT into person (person_id, role) VALUES (?,?)");
     
-            for($i=0; $i<count($this->texts);$i++){
+            for($i=0; $i<count($this->person_id);$i++){
                 $select_person_text->execute([$this->texts[$i]]);
-                $existing_person_text = $select_person_text->fetch();
+                $existing_person_text = $select_person->fetch();
                 //if result
                 if(!$existing_person_text){
                     //if no result
