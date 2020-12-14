@@ -31,7 +31,7 @@
         for($i=0; $i<count($texts); $i++){
             $texts_entry = $texts[$i];
             print_r("<p>");
-            $texts_entry->getData();
+            $texts_entry->getText_titleLink();
             print_r('</p>');
         }
     ?>

@@ -178,7 +178,7 @@ class Text{
           array_push($person_texts_array, $db_person_text_array_entry);
           //array= a group of things in a line
           //array_push= pushing something else into an already established array
-          //specify an array and an entry or I'll get confused. 
+          //specify an array and an entry or I'll get confused.
 
         }
 
