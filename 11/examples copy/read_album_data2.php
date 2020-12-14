@@ -2,9 +2,9 @@
 error_reporting(E_ALL); 
 ini_set("display_errors", 1); 
 include_once('./includes/db_config.php');
-include_once('./includes/History_5.php');
+include_once('./includes/Historical_Text.php');
 
-$file_handle = fopen('./historytextbetter.csv', 'r');
+$file_handle = fopen('./historytext.csv', 'r');
 
 $first_line = fgetcsv($file_handle);
 

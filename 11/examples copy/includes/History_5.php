@@ -25,6 +25,9 @@ class Text{
   public function setPerson_text($person_text){ $this->person_text = $person_text; }
   public function getPerson_text(){print_r('Person_text: '.$this->person_text . '<br>'); }
 
+  //1. What is calling setData?
+  //2. What is the structure of the payload to setData (i.e. what does $person_id look like?)
+  //3. Also what does str_getcsv do? (and what does trim do?)
 
   public function setPerson_id($person_id){ 
       $this->person_id = str_getcsv(trim($person_id)); 
@@ -94,7 +97,7 @@ class Text{
   
         print_r($this->person_id);
 
-          for($i=0; $i<count($this->person_id); $i++){
+          for($i=0; $i<count($this->person_id);$i++){
               if(empty($this->person_id[$i])){ continue; }
 
 //Order of operation:
@@ -152,6 +155,32 @@ class Text{
       $select_texts ->execute();
 
       $db_texts_array = $select_texts->fetchAll();
+      //gets all results back so u can see it all in 1 loop
+
+      /*
+      $db_texts_array = [
+        { //$db_texts_array[0]
+          'language': 'EN1',
+          'text_title': '...',
+          'text_id': 0 
+        },
+        { //$db_texts_arrays[1]
+          'language': 'EN2',
+          'text_title': '...',
+          'text_id': 1
+        },
+        { //$db_texts_array[2]
+          'language': 'EN3',
+          'text_title': '...',
+          'text_id': 2
+        },
+        { //$db_texts_array[3]
+          'language': 'EN3',
+          'text_title': '...',
+          'text_id': 3
+        }
+      ]
+      */
 
       $db_texts_array_count = count($db_texts_array); //4
 
@@ -161,10 +190,10 @@ class Text{
         $db_text_entry = $db_texts_array[$i];
 
         $text->setLanguage($db_texts_array[$i]['language']);
-        $text->setText_title($db_text_entry[$i]['text_title']);
-        $text->setTranslation($db_text_entry[$i]['translation']);
-        $text->setText_cache($db_text_entry[$i]['text_cache']);
-        $text->setID($db_text_entry[$i]['text_id']);
+        $text->setText_title($db_text_entry['text_title']);
+        $text->setTranslation($db_text_entry['translation']);
+        $text->setText_cache($db_text_entry['text_cache']);
+        $text->setID($db_text_entry['text_id']);
 
         $select_person_text->execute([$text->id]);
         $db_person_text_array = $select_person_text->fetchALL();
@@ -176,12 +205,19 @@ class Text{
           $db_person_text_array_entry = $db_person_text_array[$j];
 
           array_push($person_texts_array, $db_person_text_array_entry);
-          //array= a group of things in a line
-          //array_push= pushing something else into an already established array
-          //specify an array and an entry or I'll get confused. 
 
         }
 
+        /*names_array = [
+          "max",
+          "blair",
+          "lucas"
+        ]
+        */
+
+        //names_text = implode(', ', $names_array)
+
+        //"max, blair, lucas"
         
 
         $text->setPerson_text(implode(',', $person_texts_array));
@@ -189,7 +225,7 @@ class Text{
         print_r("Tell me why you won't work!!!!");
       }
       return $texts;
-      //takes data out of function and lets it into the function itself
+      //takes data out of function and lets it into the function itsel f
 
     } catch (PDOException $e){
           print_r("Error reading text from database: ".$e->getMessage() . "<br>\n");

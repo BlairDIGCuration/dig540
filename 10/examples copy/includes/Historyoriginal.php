@@ -8,7 +8,6 @@ class Text{
   private $role;
   private $id;
   private $text;
-  private $person_text;
 
   public function setTexts($text) { $this->text = $text; }
   public function getTexts(){print_r( 'texts: '. $this->text . '<br>'); }
@@ -22,9 +21,6 @@ class Text{
   public function getTranslation(){ print_r('Translation: '.$this->translation . '<br>'); }
   public function setText_cache($text_cacheLocation){ $this->text_cache = $text_cacheLocation; }
   public function getText_cache(){ print_r('Text_cache: '.$this->text_cache . '<br>'); }
-  public function setPerson_text($person_text){ $this->person_text = $person_text; }
-  public function getPerson_text(){print_r('Person_text: '.$this->person_text . '<br>'); }
-
 
   public function setPerson_id($person_id){ 
       $this->person_id = str_getcsv(trim($person_id)); 
@@ -50,7 +46,7 @@ class Text{
           //if($j%2==0) print_r("<span style='color:blue'>Translation #".($j+1)." is ".$this->subgenres[$j]."</span><br>");
          // else print_r("<span style='color:red'>Translation #".($j+1)." is ".$this->subgenres[$j]."</span><br>");
 //}
-  
+
     //use csv  numbers
     //ONLY csv
   public function setData($text_data){
@@ -76,7 +72,7 @@ class Text{
 
   public function save(){
       global $pdo;
-     
+
       try{
           $text_insert = $pdo->prepare("INSERT INTO text(translation, text_cache, text_title, language)
                                       VALUES(?,?,?,?)");
@@ -86,15 +82,15 @@ class Text{
           $this->id = $pdo->lastInsertID();
           print_r("--Saved $this->translation to the database.--<br>\n");
 
-          
+
 
           $select_person_text = $pdo->prepare("SELECT * FROM person WHERE person_id= ?");
           $person_insert = $pdo->prepare("INSERT INTO person (person_id) VALUES (?)");
           $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role, text_id) VALUES (?,?,?)");
-  
+
         print_r($this->person_id);
 
-          for($i=0; $i<count($this->person_id); $i++){
+          for($i=0; $i<count($this->person_id);$i++){
               if(empty($this->person_id[$i])){ continue; }
 
 //Order of operation:
@@ -104,7 +100,7 @@ class Text{
 //- write into person_text a row connecting person_id, text_id, and role
 
                 $select_person_text->execute([$this->person_id[$i]]);
-              
+
               $existing_person_text = $select_person_text->fetch();
               //if result
               if(!$existing_person_text){
@@ -128,22 +124,19 @@ class Text{
       } catch (PDOException $e){
           print_r("Error saving text to database: ".$e->getMessage() . "<br>\n");
           exit;
-      
-      
+
     }
   }
-
   static public function load_all(){
     global $pdo;
 
     $texts = array();
     try{
-
       $select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
-      $select_person_text = $pdo->prepare("SELECT person_id AS id
-                                          FROM person_text
-                                          WHERE person_text.text_id = ?");
-
+      $select_person_text = $pdo->prepare("SELECT person.person_id AS id
+                                          FROM person_text, text
+                                          WHERE person_text.person_id = ?
+                                          AND person_text.text_id = text.id");
       //$select_person_text = $pdo->prepare("SELECT person_text.role AS role
                                           //FROM person_text
                                           //WHERE person_text.role = ?");
@@ -151,53 +144,35 @@ class Text{
       print_r("tried to get it to work. why not?");
       $select_texts ->execute();
 
-      $db_texts_array = $select_texts->fetchAll();
+      $db_texts = $select_texts->fetchAll();
+      //gets all results back so u can see it all in 1 loop
 
-      $db_texts_array_count = count($db_texts_array); //4
-
-      for($i=0; $i<count($db_texts_array); $i++){
+      for($i=0; $i<count($db_texts); $i++){
         $text = new Text();
-
-        $db_text_entry = $db_texts_array[$i];
-
-        $text->setLanguage($db_texts_array[$i]['language']);
-        $text->setText_title($db_text_entry[$i]['text_title']);
-        $text->setTranslation($db_text_entry[$i]['translation']);
-        $text->setText_cache($db_text_entry[$i]['text_cache']);
-        $text->setID($db_text_entry[$i]['text_id']);
+        $text->setLanguage($db_texts[$i]['language']);
+        $text->setText_title($db_texts[$i]['text_title']);
+        $text->setTranslation($db_texts[$i]['translation']);
+        $text->setText_cache($db_texts[$i]['text_cache']);
+        $text->setID($db_texts[$i]['text_id']);
 
         $select_person_text->execute([$text->id]);
-        $db_person_text_array = $select_person_text->fetchALL();
-
-        $person_texts_array = array();
-
-        for($j=0; $j<count($db_person_text_array); $j++) {
-
-          $db_person_text_array_entry = $db_person_text_array[$j];
-
-          array_push($person_texts_array, $db_person_text_array_entry);
-          //array= a group of things in a line
-          //array_push= pushing something else into an already established array
-          //specify an array and an entry or I'll get confused. 
-
-        }
-
-        
-
-        $text->setPerson_text(implode(',', $person_texts_array));
+        $db_person_text = $select_person_text->fetchALL();
+        for($j=0; $j<count($db_person_text); $j++){
+          array_push($text, $texts, $db_person_text)
+        $text->setPerson_text(implode(',', $person_text));
         array_push($texts, $text);
-        print_r("Tell me why you won't work!!!!");
+        print_r("Tell me why you won't work!!!!") 
       }
       return $texts;
-      //takes data out of function and lets it into the function itself
+      //takes data out of function and lets it into the function itsel f
 
     } catch (PDOException $e){
           print_r("Error reading text from database: ".$e->getMessage() . "<br>\n");
           exit;
-      
+
     }
-  
 
   }
 
 }
+?>
