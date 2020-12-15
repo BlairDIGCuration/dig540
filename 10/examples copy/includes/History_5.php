@@ -49,6 +49,11 @@ class Text{
         else print_r("<span style='color:red'>Role #".($j+1)." is ".$this->role[$j]."</span><br>");
   }
 }
+  public function getText_titleLink(){
+    $anchor =
+    print_r($this->text_title .':'. ' found in ' . $this->text_cache . '<br>');
+    print_r($this->translation .':'. ' was originally written in' . $this->language . '<br>');
+  }
        //print_r('Role: '.$this->role.'<br>'); }
       //for($j=0; $j<count($this->subgenres); $j++){
           //if($j%2==0) print_r("<span style='color:blue'>Translation #".($j+1)." is ".$this->subgenres[$j]."</span><br>");
