@@ -152,8 +152,10 @@ class Text{
                                           //FROM person_text
                                           //WHERE person_text.role = ?");
 
-      print_r("tried to get it to work. why not?");
-      $select_texts ->execute();
+      //print_r("tried to get it to work. why not?");
+      $select_texts->execute();
+      $select_person_text = $pdo->execute()
+      
 
       $db_texts_array = $select_texts->fetchAll();
 
@@ -191,7 +193,7 @@ class Text{
         $text->setPerson_text(implode(',', $person_texts_array));
         $text->setRole(implode(',', $person_roles_array));
         array_push($texts, $text);
-        //print_r("Tell me why you won't work!!!!");
+       // print_r("Tell me why you won't work!!!!");
       }
       return $texts;
       //takes data out of function and lets it into the function itself
