@@ -106,11 +106,13 @@ class Text{
           $select_person_text = $pdo->prepare("SELECT * FROM person WHERE person_id= ?");
           $person_insert = $pdo->prepare("INSERT INTO person (person_id) VALUES (?)");
           $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role, text_id) VALUES (?,?,?)");
+          
   
         print_r($this->person_id);
 
           for($i=0; $i<count($this->person_id); $i++){
               if(empty($this->person_id[$i])){ continue; }
+
 
 //Order of operation:
 //- figure out if each person_id is already in the person table
@@ -207,7 +209,6 @@ class Text{
       }
       return $texts;
       //takes data out of function and lets it into the function itself
-
     } catch (PDOException $e){
           print_r("Error reading text from database: ".$e->getMessage() . "<br>\n");
           exit;
