@@ -129,4 +129,72 @@ class Text{
   }
 
 }
+static public function load_all(){
+  global $pdo;
+
+  $texts = array();
+  try{
+
+    $select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
+    $select_person_text = $pdo->prepare("SELECT person_id AS id
+                                        FROM person_text
+                                        WHERE person_text.text_id = ?");
+
+    //$select_person_text = $pdo->prepare("SELECT person_text.role AS role
+                                        //FROM person_text
+                                        //WHERE person_text.role = ?");
+
+    print_r("tried to get it to work. why not?");
+    $select_texts ->execute();
+
+    $db_texts_array = $select_texts->fetchAll();
+
+    $db_texts_array_count = count($db_texts_array); //4
+
+    for($i=0; $i<count($db_texts_array); $i++){
+      $text = new Text();
+
+      $db_text_entry = $db_texts_array[$i];
+
+      $text->setLanguage($db_texts_array[$i]['language']);
+      $text->setText_title($db_text_entry[$i]['text_title']);
+      $text->setTranslation($db_text_entry[$i]['translation']);
+      $text->setText_cache($db_text_entry[$i]['text_cache']);
+      $text->setID($db_text_entry[$i]['text_id']);
+
+      $select_person_text->execute([$text->id]);
+      $db_person_text_array = $select_person_text->fetchALL();
+
+      $person_texts_array = array();
+
+      for($j=0; $j<count($db_person_text_array); $j++) {
+
+        $db_person_text_array_entry = $db_person_text_array[$j];
+
+        array_push($person_texts_array, $db_person_text_array_entry);
+        //array= a group of things in a line
+        //array_push= pushing something else into an already established array
+        //specify an array and an entry or I'll get confused. 
+
+      }
+
+      
+
+      $text->setPerson_text(implode(',', $person_texts_array));
+      array_push($texts, $text);
+      print_r("Tell me why you won't work!!!!");
+    }
+    return $texts;
+    //takes data out of function and lets it into the function itself
+
+  } catch (PDOException $e){
+        print_r("Error reading text from database: ".$e->getMessage() . "<br>\n");
+        exit;
+    
+  }
+
+
+}
+
+}
 ?>

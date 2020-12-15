@@ -4,9 +4,17 @@
     include_once("./includes/db_config.php");
     include_once("./includes/History_5.php");
 
-    $texts = Text::load_all();
+    if(isset($_GET['text_cache']) && $_GET['text_cache'] != ''){
+        $texts = Text::load();
+    }
+    $texts = Text::load();
     //this section above needs work with the last video of section 10
     //it is supposed to load only one at a time?
+     //has to be done first or ull get an error. 
+        //way to see if u get an error
+        //&&= both have to be true
+    //2:37 of "navigation using metadata"
+        //needs work from reading this thing
 ?>
 
 <!doctype html>

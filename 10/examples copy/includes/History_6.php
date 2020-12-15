@@ -150,18 +150,29 @@ class Text{
     }
   }
 
-  static public function load_all(){
+  static public function load($text_cache=false){
     global $pdo;
 
     $texts = array();
     try{
+            if($text=false){
+                $select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
+                $select_texts ->execute();
 
-      $select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
+            } else{
+                $select_texts = $pdo->prepare("SELECT text.* FROM text, person_text, person
+                                                WHERE text.text_title = ?
+                                                AND person.person_name = ?
+                                                ORDER BY text.text_title ASC");
+                $select_texts ->execute([$text]);
+          
+            }
+      
+
       $select_person_text = $pdo->prepare("SELECT person_id AS person_id, role AS role
                                           FROM person_text
                                           WHERE person_text.text_id = ?");
 
-      $select_texts ->execute();
       //$select_person_text = $pdo->prepare("SELECT person_text.role AS role
                                           //FROM person_text
                                           //WHERE person_text.role = ?");

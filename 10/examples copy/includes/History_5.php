@@ -150,7 +150,7 @@ class Text{
     }
   }
 
-  static public function load_all(){
+  static public function load(){
     global $pdo;
 
     $texts = array();
@@ -161,16 +161,19 @@ class Text{
                                           FROM person_text
                                           WHERE person_text.text_id = ?");
 
+      $select_texts ->execute();
       //$select_person_text = $pdo->prepare("SELECT person_text.role AS role
                                           //FROM person_text
                                           //WHERE person_text.role = ?");
 
-  //print_r("tried to get it to work. why not?");
-      $select_texts ->execute();
+      //print_r("tried to get it to work. why not?");
+      
 
       $db_texts_array = $select_texts->fetchAll();
 
-      $db_texts_array_count = count($db_texts_array); //4
+      $db_texts_array_count = count($db_texts_array); 
+
+
 
       for($i=0; $i<count($db_texts_array); $i++){
         $text = new Text();

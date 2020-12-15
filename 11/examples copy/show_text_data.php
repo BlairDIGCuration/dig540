@@ -4,7 +4,9 @@
     include_once("./includes/db_config.php");
     include_once("./includes/History_5.php");
 
-    $texts = Text::load_all();
+    
+        $texts = Text::load_all();
+    
 
 
         //need to know what is in the database
