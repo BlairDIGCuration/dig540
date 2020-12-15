@@ -11,7 +11,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>List of all the texts!</title>
+    <title>History Through Diplomatic Texts!</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   </head>
   <body>
-    <h1>Near Eastern History Through Texts!</h1>
+    <h1>Middle Eastern Letters and Treaties</h1>
     <?php
 
         //need to know what is in the database
@@ -28,10 +28,11 @@
      //can assume it will load all albumns/texts in database
 
         for($i=0; $i<count($texts); $i++){
+            print_r("<p>");
             $texts_entry = $texts[$i];
             print_r("<p>");
             $texts_entry->getText_titleLink();
-            print_r('</p>');
+            
         }
     ?>
 

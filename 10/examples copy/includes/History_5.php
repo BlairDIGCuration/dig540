@@ -50,9 +50,15 @@ class Text{
   }
 }
   public function getText_titleLink(){
-    $anchor =
-    print_r($this->text_title .':'. ' found in ' . $this->text_cache . '<br>');
-    print_r($this->translation .':'. ' was originally written in' . $this->language . '<br>');
+    $anchor = '<a href="show_text_data.php?id=' .$this->id. '">'.$this->text_title.'</a>';
+    //$anchor = '<a href="show_text_data.php?id=' .$this_id. '">'. 
+    
+
+       // title will be what you click on
+        //id=getvariable that is passed into show album script
+       // different for each text
+    print_r('Letter: ' .$this->text_cache. ' titled, ' .$anchor. ',' . ' was orignally transcribed in ' .$this->language. ' and translates to mean: ' .$this->translation.  '<br>');
+    //print_r($this->translation .':'. ' was originally written in' . $this->language . '<br>');
   }
        //print_r('Role: '.$this->role.'<br>'); }
       //for($j=0; $j<count($this->subgenres); $j++){
@@ -157,7 +163,7 @@ class Text{
                                           //FROM person_text
                                           //WHERE person_text.role = ?");
 
-      print_r("tried to get it to work. why not?");
+  //print_r("tried to get it to work. why not?");
       $select_texts ->execute();
 
       $db_texts_array = $select_texts->fetchAll();
@@ -194,6 +200,7 @@ class Text{
         
 
         $text->setPerson_text(implode(',', $person_texts_array));
+        //problem here. Come back and fix it. 
         $text->setRole(implode(',', $person_roles_array));
         array_push($texts, $text);
         //print_r("Tell me why you won't work!!!!");
