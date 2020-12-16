@@ -27,8 +27,8 @@ class Text{
 
 
   public function setPerson_id($person_id){ 
-      print_r("person id follows");
-      print_r($person_id);
+      //print_r("person id follows");
+      //print_r($person_id);
       $this->person_id = str_getcsv(trim($person_id)); 
     }
   public function getPerson_id(){
@@ -150,21 +150,21 @@ class Text{
     }
   }
 
-  static public function load($text_cache=false){
+  static public function load($person_id=false){
     global $pdo;
 
     $texts = array();
     try{
-            if($person_id=false){
+            if($person_id==false){
                 $select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
                 $select_texts->execute();
             } else{
                 $select_texts = $pdo->prepare("SELECT text.* FROM person, person_text, text
-                                                WHERE person.person_id =  person_text.person_id AND
-                                                person.person_id = person_id AND
+                                                WHERE person.person_id = person_text.person_id AND
+                                                person.person_id = person_text.person_id AND
                                                 person.person_id = ?
                                                 ORDER BY text.text_title ASC");
-                $select_texts ->execute([$person_id]);
+                $select_texts->execute([$person_id]);
           
             }
       
@@ -184,8 +184,6 @@ class Text{
 
       $db_texts_array_count = count($db_texts_array); 
 
-
-
       for($i=0; $i<count($db_texts_array); $i++){
         $text = new Text();
 
@@ -202,7 +200,8 @@ class Text{
         $person_roles_array = array();
 
         //print_r($db_person_text_array);
-
+  
+        
         for($j=0; $j<count($db_person_text_array); $j++) {
 
           array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
@@ -213,9 +212,9 @@ class Text{
 
         }
 
-        
 
         $text->setPerson_text(implode(',', $person_texts_array));
+        $text->setPerson_id(implode(',', $person_texts_array));
         //problem here. Come back and fix it. 
         $text->setRole(implode(',', $person_roles_array));
         array_push($texts, $text);
