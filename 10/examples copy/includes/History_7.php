@@ -160,9 +160,9 @@ class Text{
                 $select_texts->execute();
             } else{
                 $select_texts = $pdo->prepare("SELECT text.* FROM person, person_text, text
-                                                WHERE person.person_id =  person_text.text_id AND
-                                                person_text.person_id = person_id AND
-                                                person.person_name = ?
+                                                WHERE person.person_id =  person_text.person_id AND
+                                                person.person_id = person_id AND
+                                                person.person_id = ?
                                                 ORDER BY text.text_title ASC");
                 $select_texts ->execute([$person_id]);
           

@@ -5,7 +5,7 @@
     include_once("./includes/History_6.php");
 
         if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
-            $texts = Text::($_GET['person_id']);
+            $texts = Text::staticPublicFunction($_GET['person_id']);
         } else {
         $texts = Text::load();
         }
