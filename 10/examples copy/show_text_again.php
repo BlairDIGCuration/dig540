@@ -4,11 +4,14 @@
     include_once("./includes/db_config.php");
     include_once("./includes/History_6.php");
 
-    
-        $texts = Text::load_all();
+        if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
+            $texts = Text::($_GET['person_id']);
+        } else {
+        $texts = Text::load();
+        }
     
 
-
+        //&&=
         //need to know what is in the database
         //static method: like the object, but doesn't get called on an album
         //way of organizng code wihtout creaitng or substantiaitng with a tect concept, but not a specific one

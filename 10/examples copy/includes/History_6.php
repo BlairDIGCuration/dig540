@@ -155,16 +155,16 @@ class Text{
 
     $texts = array();
     try{
-            if($text=false){
+            if($person_id=false){
                 $select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
-                $select_texts ->execute();
-
+                $select_texts->execute();
             } else{
-                $select_texts = $pdo->prepare("SELECT text.* FROM text, person_text, person
-                                                WHERE text.text_title = ?
-                                                AND person.person_name = ?
+                $select_texts = $pdo->prepare("SELECT text.* FROM person, person_text, text
+                                                WHERE person.person_id =  person_text.text_id AND
+                                                person_text.person_id = person_id AND
+                                                person.person_name = ?
                                                 ORDER BY text.text_title ASC");
-                $select_texts ->execute([$text]);
+                $select_texts ->execute([$person_id]);
           
             }
       

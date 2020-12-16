@@ -58,6 +58,7 @@ class Text{
         //id=getvariable that is passed into show album script
        // different for each text
     print_r('Letter: ' .$this->text_cache. ' titled, ' .$anchor. ',' . ' was orignally transcribed in ' .$this->language. ' and translates to mean: ' .$this->translation.  '<br>');
+    
     //print_r($this->translation .':'. ' was originally written in' . $this->language . '<br>');
   }
        //print_r('Role: '.$this->role.'<br>'); }
@@ -150,7 +151,7 @@ class Text{
     }
   }
 
-  static public function load(){
+  static public function load_all(){
     global $pdo;
 
     $texts = array();
@@ -167,7 +168,7 @@ class Text{
                                           //WHERE person_text.role = ?");
 
       //print_r("tried to get it to work. why not?");
-      
+  
 
       $db_texts_array = $select_texts->fetchAll();
 
