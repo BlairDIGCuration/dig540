@@ -155,18 +155,36 @@ class Text{
 
     $texts = array();
     try{
-            if($person_id==false){
-                $select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
-                $select_texts->execute();
-            } else{
-                $select_texts = $pdo->prepare("SELECT text.* FROM person, person_text, text
-                                                WHERE person.person_id = person_text.person_id AND
-                                                person.person_id = person_text.person_id AND
-                                                person.person_id = ?
-                                                ORDER BY text.text_title ASC");
-                $select_texts->execute([$person_id]);
+      
+    if($person_id==false){
+      print_r('Person ID was false: '.$person_id);
+      $select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
+      $select_texts->execute();
+  } else{
+      print_r('Person ID was not false:' .$person_id);
+      $select_texts = $pdo->prepare("SELECT text.* FROM person, person_text, text
+                                      WHERE person.person_id = person_text.person_id AND
+                                      person.person_id = ?
+                                      AND person_text.text_id = text.text_id
+
+                                      ORDER BY text.text_title ASC");
+      $select_texts->execute([$person_id]);
+  }
+    
+    //try{
+           //if($person_id==false){
+                //print_r("'Person ID was false:' .$person_id");
+              //$select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
+              //$select_texts->execute();
+            //} else{
+               // print_r("'Person ID was not false:' .$person_id");
+                //$select_texts = $pdo->prepare("SELECT text.* FROM person, person_text, text
+                                               // WHERE person.person_id = person_text.person_id AND
+                                              //  person.person_id = ?
+                                               // ORDER BY text.text_title ASC");
+               // $select_texts->execute([$person_id]);
           
-            }
+           // }
       
 
       $select_person_text = $pdo->prepare("SELECT person_id AS person_id, role AS role
