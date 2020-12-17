@@ -5,7 +5,7 @@
     include_once("./includes/History_7.php");
 
         if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
-            $text = Text::load($_GET['person_id']);
+            $text = Text::load_by_text_id($_GET['text_id']);
         } else {
             $text = false;
         }
@@ -30,11 +30,11 @@
   <body>
     <h1>Middle Eastern Letters and Treaties!</h1>
     <?php
-    if(!$text){
-        print_r('Something went wrong. Either you did not specify a text id or the id was not found.');
-    } else {
+         if(!$text){
+            print_r('Something went wrong. Either you did not specify a text id or the id was not found.');
+        } else {
         print_r("<p>");
-        $text_array->getData();
+        $text->getData();
         //or is it $text_entry?
         print_r('</p>');
     }

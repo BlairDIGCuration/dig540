@@ -51,7 +51,6 @@ class Text{
 }
   public function getText_titleLink(){
     $anchor = '<a href="show_text_again.php?id=' .$this->id. '">'.$this->text_title.'</a>';
-    //$anchor = '<a href="show_text_data.php?id=' .$this_id. '">'. 
     
 
        // title will be what you click on
@@ -162,7 +161,7 @@ class Text{
                                             WHERE person_text.text_id = ?");
       $find_text->execute([$id]);
       $db_text_array = $find_text->fetch();
-      if(!$db_text){
+      if(!$db_text_array){
         return false;
       } else {
         $text = new Text();
@@ -177,9 +176,8 @@ class Text{
         $person_texts_array = array();
         $person_roles_array = array();  
         for($j=0; $j<count($db_person_text_array); $j++) {
-
-        array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
-        array_push($person_roles_array, $db_person_text_array[$j]['role'])
+          array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
+          array_push($person_roles_array, $db_person_text_array[$j]['role']);
 
         }
         $text->setPerson_text(implode(',', $person_texts_array));
