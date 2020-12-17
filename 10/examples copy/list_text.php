@@ -27,11 +27,6 @@
     <h1>Middle Eastern Letters and Treaties!</h1>
     <?php
 
-        //need to know what is in the database
-        //static method: like the object, but doesn't get called on an album
-        //way of organizng code wihtout creaitng or substantiaitng with a tect concept, but not a specific one
-     //can assume it will load all albumns/texts in database
-
         for($i=0; $i<count($texts); $i++){
             $texts_entry = $texts[$i];
             print_r("<p>");

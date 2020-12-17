@@ -150,7 +150,7 @@ class Text{
     }
   }
 
-  static public function load_by_text_id($text_id){
+  static public function load_by_text_id($id){
     //no default id because if nothing works, don't want it to work
     global $pdo;
     try{
@@ -160,12 +160,34 @@ class Text{
       $select_person_text = $pdo->prepare("SELECT person_id AS person_id, role AS role
                                             FROM person_text
                                             WHERE person_text.text_id = ?");
-      $find_text->execute->([$text_id]);
-      $db_text = $find_text->fetch();
+      $find_text->execute([$id]);
+      $db_text_array = $find_text->fetch();
       if(!$db_text){
         return false;
       } else {
+        $text = new Text();
+        $text->setLanguage($db_text_array['language']);
+        $text->setText_title($db_text_array['text_title']);
+        $text->setTranslation($db_text_array['translation']);
+        $text->setText_cache($db_text_array['text_cache']);
+        $text->setID($id['text_id']);
 
+        $select_person_text->execute([$text->id]);
+        $db_person_text_array = $select_person_text->fetchALL();
+        $person_texts_array = array();
+        $person_roles_array = array();  
+        for($j=0; $j<count($db_person_text_array); $j++) {
+
+          array_push($person_text_array, $db_person_text_array[$j]['person_id']);
+          array_push($person_roles_array, $db_person_text_array[$j]['role']);
+          $text->setPerson_text(implode(',', $person_text_array));
+          $text->setPerson_id(implode(',', $person_text_array));
+          $text->setID(implode(',', $person_text_array));
+        //problem here. Come back and fix it. 
+          $text->setRole(implode(',', $person_roles_array));
+
+        
+        
       }
 
     } catch (PDOException $e){
@@ -214,21 +236,14 @@ class Text{
 
         $select_person_text->execute([$text->id]);
         $db_person_text_array = $select_person_text->fetchALL();
-
         $person_texts_array = array();
         $person_roles_array = array();  
-        
         for($j=0; $j<count($db_person_text_array); $j++) {
 
           array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
-          array_push($person_roles_array, $db_person_text_array[$j]['role']);
-          //array= a group of things in a line
-          //array_push= pushing something else into an already established array
-          //specify an array and an entry or I'll get confused.
+          array_push($person_roles_array, $db_person_text_array[$j]['role'])
 
         }
-
-
         $text->setPerson_text(implode(',', $person_texts_array));
         $text->setPerson_id(implode(',', $person_texts_array));
         //problem here. Come back and fix it. 
