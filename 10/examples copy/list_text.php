@@ -2,9 +2,13 @@
     error_reporting(E_ALL); 
     ini_set("display_errors", 1); 
     include_once("./includes/db_config.php");
-    include_once("./includes/History_5.php");
+    include_once("./includes/History_7.php");
 
-    $texts = Text::load_all();
+    if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
+      $text = Text::load($_GET['person_id']);
+  } else {
+  $text = Text::load();
+  }
     //this section above needs work with the last video of section 10
     //it is supposed to load only one at a time?
 ?>

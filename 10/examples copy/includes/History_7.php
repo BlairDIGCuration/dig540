@@ -50,14 +50,14 @@ class Text{
   }
 }
   public function getText_titleLink(){
-    $anchor = '<a href="show_text_data.php?id=' .$this->id. '">'.$this->text_title.'</a>';
+    $anchor = '<a href="show_text_again.php?id=' .$this->id. '">'.$this->text_title.'</a>';
     //$anchor = '<a href="show_text_data.php?id=' .$this_id. '">'. 
     
 
        // title will be what you click on
         //id=getvariable that is passed into show album script
        // different for each text
-    print_r('Letter: ' .$this->text_cache. ' titled, ' .$anchor. ',' . ' was orignally transcribed in ' .$this->language. ' and translates to mean: ' .$this->translation.  '<br>');
+    print_r('Letter: ' .$this->text_cache. ' titled, ' .$anchor. '<br>');
     //print_r($this->translation .':'. ' was originally written in' . $this->language . '<br>');
   }
        //print_r('Role: '.$this->role.'<br>'); }
@@ -150,6 +150,31 @@ class Text{
     }
   }
 
+  static public function load_by_text_id($text_id){
+    //no default id because if nothing works, don't want it to work
+    global $pdo;
+    try{
+      $find_text = $pdo->prepare("SELECT * FROM text
+                                  WHERE text_id = ?");
+
+      $select_person_text = $pdo->prepare("SELECT person_id AS person_id, role AS role
+                                            FROM person_text
+                                            WHERE person_text.text_id = ?");
+      $find_text->execute->([$text_id]);
+      $db_text = $find_text->fetch();
+      if(!$db_text){
+        return false;
+      } else {
+
+      }
+
+    } catch (PDOException $e){
+      print_r("Error reading single text from database: ".$e->getMessage() . "<br>\n");
+      exit;
+  
+    } 
+  }
+
   static public function load($person_id=false){
     global $pdo;
 
@@ -170,30 +195,7 @@ class Text{
                                       ORDER BY text.text_title ASC");
       $select_texts->execute([$person_id]);
   }
-    
-    //try{
-           //if($person_id==false){
-                //print_r("'Person ID was false:' .$person_id");
-              //$select_texts = $pdo->prepare("SELECT * FROM text ORDER BY text_title ASC ");
-              //$select_texts->execute();
-            //} else{
-               // print_r("'Person ID was not false:' .$person_id");
-                //$select_texts = $pdo->prepare("SELECT text.* FROM person, person_text, text
-                                               // WHERE person.person_id = person_text.person_id AND
-                                              //  person.person_id = ?
-                                               // ORDER BY text.text_title ASC");
-               // $select_texts->execute([$person_id]);
-          
-           // }
       
-
-      $select_person_text = $pdo->prepare("SELECT person_id AS person_id, role AS role
-                                          FROM person_text
-                                          WHERE person_text.text_id = ?");
-
-      //$select_person_text = $pdo->prepare("SELECT person_text.role AS role
-                                          //FROM person_text
-                                          //WHERE person_text.role = ?");
 
       //print_r("tried to get it to work. why not?");
       
@@ -204,7 +206,6 @@ class Text{
 
       for($i=0; $i<count($db_texts_array); $i++){
         $text = new Text();
-
         $text->setLanguage($db_texts_array[$i]['language']);
         $text->setText_title($db_texts_array[$i]['text_title']);
         $text->setTranslation($db_texts_array[$i]['translation']);
@@ -215,10 +216,7 @@ class Text{
         $db_person_text_array = $select_person_text->fetchALL();
 
         $person_texts_array = array();
-        $person_roles_array = array();
-
-        //print_r($db_person_text_array);
-  
+        $person_roles_array = array();  
         
         for($j=0; $j<count($db_person_text_array); $j++) {
 
