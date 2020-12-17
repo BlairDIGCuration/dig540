@@ -166,28 +166,26 @@ class Text{
         return false;
       } else {
         $text = new Text();
-        $text->setLanguage($db_text_array['language']);
-        $text->setText_title($db_text_array['text_title']);
-        $text->setTranslation($db_text_array['translation']);
-        $text->setText_cache($db_text_array['text_cache']);
-        $text->setID($id['text_id']);
+        $text->setLanguage($db_text['language']);
+        $text->setText_title($db_text['text_title']);
+        $text->setTranslation($db_text['translation']);
+        $text->setText_cache($db_text['text_cache']);
+        $text->setID($db_text['text_id']);
 
-        $select_person_text->execute([$text->id]);
+        $select_person_text->execute([$id]);
         $db_person_text_array = $select_person_text->fetchALL();
         $person_texts_array = array();
         $person_roles_array = array();  
         for($j=0; $j<count($db_person_text_array); $j++) {
 
-          array_push($person_text_array, $db_person_text_array[$j]['person_id']);
-          array_push($person_roles_array, $db_person_text_array[$j]['role']);
-          $text->setPerson_text(implode(',', $person_text_array));
-          $text->setPerson_id(implode(',', $person_text_array));
-          $text->setID(implode(',', $person_text_array));
-        //problem here. Come back and fix it. 
-          $text->setRole(implode(',', $person_roles_array));
+        array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
+        array_push($person_roles_array, $db_person_text_array[$j]['role'])
 
-        
-        
+        }
+        $text->setPerson_text(implode(',', $person_texts_array));
+        $text->setPerson_id(implode(',', $person_texts_array));
+        $text->setRole(implode(',', $person_roles_array));
+        return $text;
       }
 
     } catch (PDOException $e){
@@ -240,13 +238,12 @@ class Text{
         $person_roles_array = array();  
         for($j=0; $j<count($db_person_text_array); $j++) {
 
-          array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
-          array_push($person_roles_array, $db_person_text_array[$j]['role'])
+        array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
+        array_push($person_roles_array, $db_person_text_array[$j]['role'])
 
         }
         $text->setPerson_text(implode(',', $person_texts_array));
         $text->setPerson_id(implode(',', $person_texts_array));
-        //problem here. Come back and fix it. 
         $text->setRole(implode(',', $person_roles_array));
         array_push($texts, $text);
         //print_r("Tell me why you won't work!!!!");
