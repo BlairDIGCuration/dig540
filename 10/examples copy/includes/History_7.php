@@ -119,7 +119,7 @@ class Text{
 //- get the person_id
 //- write into person_text a row connecting person_id, text_id, and role
 
-                $select_person_text->execute([$this->person_id[$i]]);
+              $select_person_text->execute([$this->person_id[$i]]);
               
               $existing_person_text = $select_person_text->fetch();
               //if result
@@ -230,8 +230,8 @@ class Text{
         $text->setText_cache($db_texts_array[$i]['text_cache']);
         $text->setID($db_texts_array[$i]['text_id']);
 
-        $select_person_text->execute([$text->id]);
-        $db_person_text_array = $select_person_text->fetchALL();
+        $select_texts->execute([$text->id]);
+        $db_person_text_array = $select_texts->fetchALL();
         $person_texts_array = array();
         $person_roles_array = array();  
         for($j=0; $j<count($db_person_text_array); $j++) {
