@@ -5,7 +5,7 @@
     include_once("./includes/History_7.php");
 
     if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
-      $text = Text::load($_GET['person_id']);
+      $text = Text::load($_GET['text_id']);
   } else {
   $text = Text::load();
   }

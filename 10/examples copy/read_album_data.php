@@ -2,7 +2,7 @@
 error_reporting(E_ALL); 
 ini_set("display_errors", 1); 
 include_once('./includes/db_config.php');
-include_once('./includes/History_5.php');
+include_once('./includes/History_7.php');
 
 $file_handle = fopen('./historytextbetter.csv', 'r');
 

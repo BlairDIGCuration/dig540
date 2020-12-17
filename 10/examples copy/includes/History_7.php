@@ -160,8 +160,8 @@ class Text{
                                             FROM person_text
                                             WHERE person_text.text_id = ?");
       $find_text->execute([$id]);
-      $db_text_array = $find_text->fetch();
-      if(!$db_text_array){
+      $db_text = $find_text->fetch();
+      if(!$db_text){
         return false;
       } else {
         $text = new Text();
@@ -237,7 +237,7 @@ class Text{
         for($j=0; $j<count($db_person_text_array); $j++) {
 
         array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
-        array_push($person_roles_array, $db_person_text_array[$j]['role'])
+        array_push($person_roles_array, $db_person_text_array[$j]['role']);
 
         }
         $text->setPerson_text(implode(',', $person_texts_array));
