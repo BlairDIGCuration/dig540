@@ -14,7 +14,7 @@
         //static method: like the object, but doesn't get called on an album
         //way of organizng code wihtout creaitng or substantiaitng with a tect concept, but not a specific one
      //can assume it will load all albumns/texts in database
-
+     
 ?> 
        
 <!doctype html>
