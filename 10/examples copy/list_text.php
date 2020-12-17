@@ -5,9 +5,9 @@
     include_once("./includes/History_7.php");
 
     if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
-      $text = Text::load($_GET['text_id']);
+      $texts = Text::load($_GET['text_id']);
   } else {
-  $text = Text::load();
+  $texts = false;
   }
     //this section above needs work with the last video of section 10
     //it is supposed to load only one at a time?
