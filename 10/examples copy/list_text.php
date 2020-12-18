@@ -7,7 +7,7 @@
     if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
       $texts = Text::load($_GET['person_id']);
   } else {
-      $texts = Text::load_texts($_GET['text_id']);
+      $texts = Text::load();
   }
     // if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
    //  $texts = Text::load_texts($_GET['text_id']);
