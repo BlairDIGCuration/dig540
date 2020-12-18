@@ -36,7 +36,11 @@ class Text{
     for($j=0; $j<count($this->person_id); $j++){
         if($j%2==0) print_r("<span style='color:blue'>Person_id #".($j+1)." is ".$this->person_id[$j]."</span><br>");
         else print_r("<span style='color:red'>Person_id #".($j+1)." is ".$this->person_id[$j]."</span><br>");
+        $person_id = $pdo->prepare("SELECT *. FROM person ");
+        $person_id->execute();  
+
     }
+    
   }
 
   public function setRole($role){
@@ -50,7 +54,10 @@ class Text{
   }
 }
   public function getText_titleLink(){
+
     $anchor = '<a href="show_text_again.php?id=' .$this->id. '">'.$this->text_title.'</a>';
+    $anchor2 = '<a href="show_text_again.php?person_id=' .$this->person_id. '">' .$this->person_id. '</a>';
+    //$anchor2 ='<a href="show_text_again.php?person_id=' .$this->person_id. '">' .$this->person_id. '</a>';
 
 //$anchor = '<a href="show_text_again.php?id=' .$this->person_id(). '">' .$this->person_id. '</a>';
     
@@ -58,10 +65,10 @@ class Text{
        // title will be what you click on
         //id=getvariable that is passed into show album script
        // different for each text
-     // print_r('The person: ' .$anchor2. ' was relevent to the letter, identified as ' .$this->text_cache.'<br>');
          
-      print_r('Letter: ' .$this->text_cache. ' titled, ' .$anchor. '<br>');
-      print_r('Why are you not working? ANSWER MEEEE!!!');
+      print_r('The letter is titled, ' .$anchor. '<br>');
+     print_r('The person: ' .$anchor2. ' was relevent to the letter, identified as ' .$this->text_cache.'<br>');
+
      
     //print_r($this->translation .':'. ' was originally written in' . $this->language . '<br>');
   }
@@ -108,7 +115,6 @@ class Text{
           print_r("--Saved $this->translation to the database.--<br>\n");
 
           
-
           $select_person_text = $pdo->prepare("SELECT * FROM person WHERE person_id= ?");
           $person_insert = $pdo->prepare("INSERT INTO person (person_id) VALUES (?)");
           $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role, text_id) VALUES (?,?,?)");
@@ -155,11 +161,11 @@ class Text{
       
     }
   }
-
   static public function load_by_text_id($id){
     //no default id because if nothing works, don't want it to work
     global $pdo;
     try{
+     
       $find_text = $pdo->prepare("SELECT * FROM text
                                   WHERE text_id = ?");
 
@@ -190,6 +196,8 @@ class Text{
         $text->setPerson_text(implode(',', $person_texts_array));
         $text->setPerson_id(implode(',', $person_texts_array));
         $text->setRole(implode(',', $person_roles_array));
+
+   
         return $text;
       }
 
@@ -202,6 +210,7 @@ class Text{
 
   static public function load($person_id=false){
     global $pdo;
+
 
     $texts = array();
     try{

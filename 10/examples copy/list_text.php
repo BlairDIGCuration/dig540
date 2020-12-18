@@ -4,11 +4,17 @@
     include_once("./includes/db_config.php");
     include_once("./includes/History_7.php");
 
-    if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
-      $texts = Text::load($_GET['text_id']);
+    if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
+      $texts = Text::load($_GET['person_id']);
   } else {
       $texts = Text::load();
   }
+
+  //if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
+   // $texts = Text::load_texts($_GET['text_id']);
+  //} else {
+  //  $texts = Text::load_texts();
+  //}
     //this section above needs work with the last video of section 10
     //it is supposed to load only one at a time?
 ?>
