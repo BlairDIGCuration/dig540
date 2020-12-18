@@ -56,7 +56,7 @@ class Text{
   public function getText_titleLink(){
 
     $anchor = '<a href="show_text_again.php?id=' .$this->id. '">'.$this->text_title.'</a>';
-    //$anchor2 = '<a href="show_text_again.php?person_id=' .$this->person_id. '">' .$this->person_id. '</a>';
+    $anchor2 = '<a href="show_text_again.php?person_id=' .$this->person_id. '">' .$this->person_id. '</a>';
     //$anchor2 ='<a href="show_text_again.php?person_id=' .$this->person_id. '">' .$this->person_id. '</a>';
 
 //$anchor = '<a href="show_text_again.php?id=' .$this->person_id(). '">' .$this->person_id. '</a>';
@@ -67,7 +67,8 @@ class Text{
        // different for each text
          
       print_r('The letter is titled, ' .$anchor. '<br>');
-      print_r($anchor. ' was written in ' .$this->language. ' and is officially known as ' .$this->text_cache. '<br>');
+      //print_r("<p>");
+      print_r( 'The letter above was written in ' .$this->language. ' and is officially known as ' .$this->text_cache. '<br>');
      // print_r('The person: ' .$anchor2. ' was relevent to the letter, identified as ' .$this->text_cache.'<br>');
 
      
