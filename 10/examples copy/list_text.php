@@ -7,7 +7,7 @@
     if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
       $texts = Text::load($_GET['text_id']);
   } else {
-  $texts = Text::load();
+      $texts = Text::load();
   }
     //this section above needs work with the last video of section 10
     //it is supposed to load only one at a time?
@@ -33,6 +33,7 @@
             $texts_entry->getText_titleLink();
             print_r('</p>');
         }
+        
     ?>
 
 <!-- Optional JavaScript -->

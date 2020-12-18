@@ -9,6 +9,13 @@
         } else {
             $text = false;
         }
+
+        
+        //if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
+           // $text = Text::load_by_person_id($_GET['text_id']);
+       // } else {
+         //   $text = Text::load(getData);
+      //  }
          //&&=
         //need to know what is in the database
         //static method: like the object, but doesn't get called on an album

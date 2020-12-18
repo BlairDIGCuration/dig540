@@ -52,16 +52,20 @@ class Text{
   public function getText_titleLink(){
     $anchor = '<a href="show_text_again.php?id=' .$this->id. '">'.$this->text_title.'</a>';
 
-    //$anchor = '<a href="show_text_again.php?id=' .$this->person_id. '">' .$this->person_id. '</a>';
+//$anchor = '<a href="show_text_again.php?id=' .$this->person_id(). '">' .$this->person_id. '</a>';
     
 
        // title will be what you click on
         //id=getvariable that is passed into show album script
        // different for each text
-    print_r('Letter: ' .$this->text_cache. ' titled, ' .$anchor. '<br>');
-    print_r('The person: ' .$this->person_id. ' was relevent to the letter, identified as ' .$this->text_cache.'<br>');
+     // print_r('The person: ' .$anchor2. ' was relevent to the letter, identified as ' .$this->text_cache.'<br>');
+         
+      print_r('Letter: ' .$this->text_cache. ' titled, ' .$anchor. '<br>');
+      print_r('Why are you not working? ANSWER MEEEE!!!');
+     
     //print_r($this->translation .':'. ' was originally written in' . $this->language . '<br>');
   }
+  
        //print_r('Role: '.$this->role.'<br>'); }
       //for($j=0; $j<count($this->subgenres); $j++){
           //if($j%2==0) print_r("<span style='color:blue'>Translation #".($j+1)." is ".$this->subgenres[$j]."</span><br>");
