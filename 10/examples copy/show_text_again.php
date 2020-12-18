@@ -7,7 +7,7 @@
         if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
             $text = Text::load($_GET['person_id']);
         } else {
-            $text = false;
+            $text = Text::load_texts($_GET['text_id']);
         }
 
        // if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
@@ -21,6 +21,8 @@
        // } else {
          //   $text = Text::load(getData);
       //  }
+
+      
          //&&=
         //need to know what is in the database
         //static method: like the object, but doesn't get called on an album

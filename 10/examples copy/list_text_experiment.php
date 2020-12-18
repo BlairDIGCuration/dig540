@@ -4,17 +4,13 @@
     include_once("./includes/db_config.php");
     include_once("./includes/History_7.php");
 
+    if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
+      $texts = Text::load($_GET['text_id']);
     if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
       $texts = Text::load($_GET['person_id']);
   } else {
-      $texts = Text::load_texts($_GET['text_id']);
+      $texts = Text::load();
   }
-    // if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
-   //  $texts = Text::load_texts($_GET['text_id']);
-   // } else {
-   //  $texts = Text::load_texts();
-//}
-      //$texts= Text::load_texts();
 
   //if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
    // $texts = Text::load_texts($_GET['text_id']);
@@ -24,7 +20,6 @@
     //this section above needs work with the last video of section 10
     //it is supposed to load only one at a time?
 ?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -38,7 +33,6 @@
   <body>
     <h1>Middle Eastern Letters and Treaties!</h1>
     <?php
-
         for($i=0; $i<count($texts); $i++){
             $texts_entry = $texts[$i];
             print_r("<p>");
@@ -47,7 +41,6 @@
         }
         
     ?>
-
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
