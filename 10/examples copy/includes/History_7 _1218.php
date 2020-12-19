@@ -94,7 +94,7 @@ class Text{
           $this->setRole($text_data[1]);
       }
 
-//taking avalible data and makes it avalible on webpage 
+//taking avalible data and makes it avalible on webpage
   public function getData(){
       $this->getTexts();
       $this->getID();

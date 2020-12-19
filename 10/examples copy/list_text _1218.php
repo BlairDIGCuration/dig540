@@ -43,8 +43,8 @@
     <h1>Middle Eastern Letters and Treaties!</h1>
     <?php
   
-        for($i=0; $i<count($texts_array); $i++){
-            $texts_entry = $texts_array[$i];
+        for($i=0; $i<count($texts); $i++){
+            $texts_entry = $texts[$i];
             print_r("<p>");
             $texts_entry->getText_titleLink();
             print_r('</p>');

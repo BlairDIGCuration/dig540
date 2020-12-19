@@ -2,8 +2,7 @@
     error_reporting(E_ALL); 
     ini_set("display_errors", 1); 
     include_once("./includes/db_config.php");
-    include_once("./includes/History_7.php"); 
-
+    include_once("./includes/History_7_1218.php");
 
 
         if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
@@ -54,18 +53,17 @@
     <h1>Middle Eastern Letters and Treaties!</h1>
     <?php
          if(!$texts_array){
-            print_r('There was a disturbance in the force. Either you did not specify a text id or the id was not found.');
+            print_r('Something went wrong. Either you did not specify a text id or the id was not found.');
         } else {
-              print_r("<p>");
-              $texts_array->getData();
-              print_r('</p>');
 
-             //for($i=0; $i<count($texts_array); $i++){
-              //$texts_array[$i]->getText_titleLink();
+             print_r("<p>");
+
+             for($i=0; $i<count($texts_array); $i++){
+              $texts_array[$i]->getText_titleLink();
             }
         //or is it $text_entry?
-            // print_r('</p>');
-    //}
+             print_r('</p>');
+    }
         //$texts_entry = $texts[$i];
         
     ?>
