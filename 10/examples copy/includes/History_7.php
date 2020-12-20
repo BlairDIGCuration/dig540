@@ -59,6 +59,7 @@ class Text{
 
     $anchor = '<a href="show_text_again.php?text_id=' .$this->id. '">'.$this->text_title.'</a>';
     print_r('The letter is titled, ' .$anchor. ' but is offically known as ' .$this->text_cache. '<br>');
+    //print_r(.$this->person_id. 'is connected to ' .$this->text_cache. ' as a ' .$this->role. '<br>')
 
     //print_r('Those who are known to be connected to the text performed these roles:' .$this->role. '.' '<br>'); 
     //$anchor2 = '<a href="show_text_again.php?person_id=' .$this->person_id. '">' .$this->person_id. '</a>';
