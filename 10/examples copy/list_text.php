@@ -10,7 +10,8 @@
       if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
        $texts_array = Text::load_texts($_GET['text_id']);
        } else {
-        print_r("What do I do? :(");
+        $texts_array = Text::load();
+        print_r("Oh, come on!");
      }
   }
     // if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
@@ -42,12 +43,13 @@
   <body>
     <h1>Middle Eastern Letters and Treaties!</h1>
     <?php
-        $texts_array = "";
+        $i = "";
+        $texts_array[$i]= "";
         for($i=0; $i<count($texts_array); $i++){
-            $texts_entry = $texts_array[$i];
-            print_r("<p>");
-            $texts_array[$i]->getText_titleLink();
-            print_r('</p>');
+           $texts_entry = $texts_array[$i];
+           // print_r("<p>");
+            $texts_entry->getText_titleLink();
+           // print_r('</p>');
         }
         
     ?>
