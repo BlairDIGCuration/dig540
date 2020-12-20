@@ -9,7 +9,6 @@ class Text{
   private $id;
   private $text;
   private $person_text;
-
   public function setTexts($text) { $this->text = $text; }
   public function getTexts(){print_r( 'texts: '. $this->text . '<br>'); }
   public function setID($dbID){ $this->id = $dbID; }
@@ -24,8 +23,6 @@ class Text{
   public function getText_cache(){ print_r('Text_cache: '.$this->text_cache . '<br>'); }
   public function setPerson_text($person_text){ $this->person_text = $person_text; }
   public function getPerson_text(){print_r('Person_text: '.$this->person_text . '<br>'); }
-
-
   public function setPerson_id($person_id){ 
       //print_r("person id follows");
       //print_r($person_id);
@@ -35,38 +32,32 @@ class Text{
     $pdo = "";
     print_r($this->person_id);
     for($j=0; $j<count($this->person_id); $j++){
-        if($j%2==0) print_r("<span style='color:blue'>Person_id #".($j+1)." is ".$this->person_id[$j]."</span><br>");
-        else print_r("<span style='color:red'>Person_id #".($j+1)." is ".$this->person_id[$j]."</span><br>");
-
+        print_r('<a href="list_text.php?person_id='.$this->person_id[$j].'">Person_id #'.($j+1).' is '.$this->person_id[$j].'</a><br>');
        
-
     }
     
   }
-
   public function setRole($role){
        $this->role = str_getcsv($role); 
     }
   public function getRole(){
     print_r($this->role);
       for($j=0; $j<count($this->role); $j++){
-        if($j%2==0) print_r("<span style='color:blue'>Role #".($j+1)." is ".$this->role[$j]."</span><br>");
-        else print_r("<span style='color:red'>Role #".($j+1)." is ".$this->role[$j]."</span><br>");
+         print_r("Role #".($j+1)." is ".$this->role[$j]."<br>");
+        //else print_r("<span style='color:red'>Role #".($j+1)." is ".$this->role[$j]."</span><br>");
   }
 }
   public function getText_titleLink(){
 
-
     $anchor = '<a href="show_text_again.php?text_id=' .$this->id. '">'.$this->text_title.'</a>';
     print_r('The letter is titled, ' .$anchor. ' but is offically known as ' .$this->text_cache. '<br>');
+    //print_r(.$this->person_id. 'is connected to ' .$this->text_cache. ' as a ' .$this->role. '<br>')
 
     //print_r('Those who are known to be connected to the text performed these roles:' .$this->role. '.' '<br>'); 
     //$anchor2 = '<a href="show_text_again.php?person_id=' .$this->person_id. '">' .$this->person_id. '</a>';
     //$anchor2 ='<a href="show_text_again.php?person_id=' .$this->person_id. '">' .$this->person_id. '</a>';
-
   //$anchor = '<a href="show_text_again.php?id=' .$this->person_id(). '">' .$this->person_id. '</a>';
     
-
        // title will be what you click on
         //id=getvariable that is passed into show album script
        // different for each text
@@ -94,7 +85,6 @@ class Text{
           $this->setPerson_id($text_data[0]);
           $this->setRole($text_data[1]);
       }
-
 //taking avalible data and makes it avalible on webpage 
   public function getData(){
       $this->getTexts();
@@ -106,7 +96,6 @@ class Text{
       $this->getPerson_id();
       $this->getRole();
   }
-
   public function save(){
       global $pdo;
      
@@ -118,27 +107,22 @@ class Text{
           $db_text = $text_insert->execute([$this->translation, $this->text_cache, $this->text_title, $this->language]);
           $this->id = $pdo->lastInsertID();
           print_r("--Saved $this->translation to the database.--<br>\n");
-
           
           $select_person_text = $pdo->prepare("SELECT * FROM person WHERE person_id= ?");
           $person_insert = $pdo->prepare("INSERT INTO person (person_id) VALUES (?)");
           $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role, text_id) VALUES (?,?,?)");
           
           $person_id = $pdo->prepare("SELECT *. FROM person");
-         // $person_id->execute();  
+          $person_id->execute();  
   
         print_r($this->person_id);
-
           for($i=0; $i<count($this->person_id); $i++){
               if(empty($this->person_id[$i])){ continue; }
-
-
 //Order of operation:
 //- figure out if each person_id is already in the person table
 //- if that person doesn't exist, write a new person record
 //- get the person_id
 //- write into person_text a row connecting person_id, text_id, and role
-
               $select_person_text->execute([$this->person_id[$i]]);
               
               $existing_person_text = $select_person_text->fetch();
@@ -175,7 +159,6 @@ class Text{
      
       $find_text = $pdo->prepare("SELECT * FROM text
                                   WHERE text_id = ?");
-
       $select_person_text = $pdo->prepare("SELECT person_id AS person_id, role AS role
                                             FROM person_text
                                             WHERE person_text.text_id = ?");
@@ -186,14 +169,12 @@ class Text{
         print_r('Text_id was false: ' .$id);
       } else {
         print_r('Text_id was not false:' .$id);
-
         $text = new Text();
         $text->setLanguage($db_text['language']);
         $text->setText_title($db_text['text_title']);
         $text->setTranslation($db_text['translation']);
         $text->setText_cache($db_text['text_cache']);
         $text->setID($db_text['text_id']);
-
         $select_person_text->execute([$id]);
         $db_person_text_array = $select_person_text->fetchALL();
         $person_texts_array = array();
@@ -201,29 +182,23 @@ class Text{
         for($j=0; $j<count($db_person_text_array); $j++) {
           array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
           array_push($person_roles_array, $db_person_text_array[$j]['role']);
-
         }
         $text->setPerson_text(implode(',', $person_texts_array));
         $text->setPerson_id(implode(',', $person_texts_array));
         $text->setRole(implode(',', $person_roles_array));
-
         $texts_array = array();
         array_push($texts_array, $text);
    
         return $texts_array;
       }
-
     } catch (PDOException $e){
       print_r("Error reading single text from database: ".$e->getMessage() . "<br>\n");
       exit;
   
     } 
   }
-
   static public function load($person_id=false){
     global $pdo;
-
-
     $texts = array();
     try{
       
@@ -237,19 +212,14 @@ class Text{
                                       WHERE person.person_id = person_text.person_id AND
                                       person.person_id = ?
                                       AND person_text.text_id = text.text_id
-
                                       ORDER BY text.text_title ASC");
       $select_texts->execute([$person_id]);
   }
       
-
       //print_r("tried to get it to work. why not?");
       
-
       $db_texts_array = $select_texts->fetchAll();
-
       $db_texts_array_count = count($db_texts_array); 
-
       for($i=0; $i<count($db_texts_array); $i++){
         $text = new Text();
         $text->setLanguage($db_texts_array[$i]['language']);
@@ -257,16 +227,13 @@ class Text{
         $text->setTranslation($db_texts_array[$i]['translation']);
         $text->setText_cache($db_texts_array[$i]['text_cache']);
         $text->setID($db_texts_array[$i]['text_id']);
-
         $select_texts->execute([$text->id]);
         $db_person_text_array = $select_texts->fetchALL();
         $person_texts_array = array();
         $person_roles_array = array();  
         for($j=0; $j<count($db_person_text_array); $j++) {
-
         array_push($person_texts_array, $db_person_text_array[$j]['person_id']);
         array_push($person_roles_array, $db_person_text_array[$j]['role']);
-
         }
         $text->setPerson_text(implode(',', $person_texts_array));
         $text->setPerson_id(implode(',', $person_texts_array));
@@ -282,7 +249,5 @@ class Text{
       
     }
   print_r("hi");
-
   }
-
 }

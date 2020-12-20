@@ -71,11 +71,11 @@
          $texts_array[$i]->getData();
            if(!$texts_array){
             print_r('There was a disturbance in the force. Either you did not specify an ancient texts or it has been lost to the sands of the internet.');
-            } else {
-              print_r("<p>");
-              $texts_array[$i]->getData();
-              print_r('</p>');
-            }
+            } //else {
+              //print_r("<p>");
+              //$texts_array[$i]->getData();
+              //print_r('</p>');
+           // }
           }
         //or is it $text_entry?
             // print_r('</p>');
