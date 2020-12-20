@@ -6,18 +6,30 @@
 
 
 
-        if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
-            $texts_array = Text::load($_GET['person_id']);
-        } else {
-            if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
-              $texts_array = Text::load_texts($_GET['text_id']);
-            } else { 
-              $texts_array = false;
+
+    if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
+      $texts_array = Text::load($_GET['person_id']);
+  } else {
+      if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
+        $texts_array = Text::load_texts($_GET['text_id']);
+      } else { 
+        //$texts_array = false;
+         $texts_array = Text::load();
+         print_r("What do I do? :(");
+      }
+  } 
+
+        //if(isset($_GET['person_id']) && $_GET['person_id'] != ''){
+           // $texts_array = Text::load($_GET['person_id']);
+        //} else {
+           // if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
+             // $texts_array = Text::load_texts($_GET['text_id']);
+           // } else { 
             //  $texts_array = Text::load();
               //print_r("What do I do? I've been given no instructions :(");
 
-            }
-        } 
+          //  }
+        //} 
 
        // if(isset($_GET['text_id']) && $_GET['text_id'] != ''){
          // $texts = Text::load_texts($_GET['text_id']);
@@ -53,15 +65,18 @@
   <body>
     <h1>Middle Eastern Letters and Treaties!</h1>
     <?php
-         if(!$texts_array){
-            print_r('There was a disturbance in the force. Either you did not specify a text id or the id was not found.');
-        } else {
+        //for($i=0; $i<count($texts_array); $i++){
+          //$texts_array = $texts_array[$i];
+        //for($i=0; $i<count($texts_array); $i++){
+         //$texts_array[$i]->getData();
+           if(!$texts_array){
+            print_r('There was a disturbance in the force. Either you did not specify an ancient texts or it has been lost to the sands of the internet.');
+            } else {
               print_r("<p>");
               $texts_array->getData();
               print_r('</p>');
 
-             //for($i=0; $i<count($texts_array); $i++){
-              //$texts_array[$i]->getText_titleLink();
+           
             }
         //or is it $text_entry?
             // print_r('</p>');
