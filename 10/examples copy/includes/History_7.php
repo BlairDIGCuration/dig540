@@ -1,5 +1,5 @@
 <?php
-class Text{
+class Text{  
   private $language;
   private $text_title;
   private $translation;
@@ -32,12 +32,13 @@ class Text{
       $this->person_id = str_getcsv(trim($person_id)); 
     }
   public function getPerson_id(){
+    $pdo = "";
     print_r($this->person_id);
     for($j=0; $j<count($this->person_id); $j++){
         if($j%2==0) print_r("<span style='color:blue'>Person_id #".($j+1)." is ".$this->person_id[$j]."</span><br>");
         else print_r("<span style='color:red'>Person_id #".($j+1)." is ".$this->person_id[$j]."</span><br>");
-        $person_id = $pdo->prepare("SELECT *. FROM person ");
-        $person_id->execute();  
+
+       
 
     }
     
@@ -123,6 +124,8 @@ class Text{
           $person_insert = $pdo->prepare("INSERT INTO person (person_id) VALUES (?)");
           $person_text_link = $pdo->prepare("INSERT into person_text (person_id, role, text_id) VALUES (?,?,?)");
           
+          $person_id = $pdo->prepare("SELECT *. FROM person");
+          $person_id->execute();  
   
         print_r($this->person_id);
 

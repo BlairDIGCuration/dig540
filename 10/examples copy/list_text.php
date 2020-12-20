@@ -42,11 +42,11 @@
   <body>
     <h1>Middle Eastern Letters and Treaties!</h1>
     <?php
-  
+        $texts_array = "";
         for($i=0; $i<count($texts_array); $i++){
             $texts_entry = $texts_array[$i];
             print_r("<p>");
-            $texts_entry->getText_titleLink();
+            $texts_array[$i]->getText_titleLink();
             print_r('</p>');
         }
         
